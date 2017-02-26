@@ -8,11 +8,26 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController {
+class TweetsViewController: UIViewController //UITableViewDataSource, UITableViewDelegate {
+{
+    @IBOutlet var tableView: UITableView!
+    
 
+    var tweets: [Tweet]!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        TwitterClient.sharedInstance?.homeTimeLine(success: { (tweets: [Tweet]) in
+            self.tweets = tweets
+            
+            for tweet in tweets{
+                print(tweet.text as Any)
+            }
+        }, failure: { (error: NSError) in
+            print(error.localizedDescription)
+        })
         // Do any additional setup after loading the view.
     }
 
@@ -21,7 +36,15 @@ class TweetsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func onLogoutButton(_ sender: Any) {
+        TwitterClient.sharedInstance?.logout()
+        
+    }
+    
 
+    
+    
     /*
     // MARK: - Navigation
 
