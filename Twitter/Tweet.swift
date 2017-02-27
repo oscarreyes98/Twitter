@@ -35,7 +35,7 @@ class Tweet: NSObject {
         
         name = dictionary["name"] as? String as NSString?
         screenname = dictionary["screen_name"] as? String as NSString?
-        let profileUrlString = dictionary["profile_image_url_https"] as? String
+        let profileUrlString = dictionary["profile_image_url"] as? String
         if let profileUrlString = profileUrlString{
             profileUrl = NSURL(string: profileUrlString)
         }
@@ -43,6 +43,8 @@ class Tweet: NSObject {
         print("Tweet class hey you got \(name)")
         print("hey this is your favorties \(favoritesCount)")
         print("hey this is your tweet \(text)")
+        print("hey this is your url \(profileUrlString)")
+
 
     }
 

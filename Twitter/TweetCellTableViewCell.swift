@@ -34,7 +34,7 @@ class TweetCellTableViewCell: UITableViewCell {
             self.tweetLabel.text = self.tweet?.text as String?
             //
             if let profPic = self.tweet?.profileUrl{
-                self.picImageView.setImageWith(profPic as! URL)
+            self.picImageView.setImageWith(profPic as URL)
             }
             
             
