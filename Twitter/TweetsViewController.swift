@@ -8,8 +8,8 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController //UITableViewDataSource, UITableViewDelegate {
-{
+class TweetsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate{
+
     @IBOutlet var tableView: UITableView!
     
 
@@ -18,9 +18,15 @@ class TweetsViewController: UIViewController //UITableViewDataSource, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 200
 
         TwitterClient.sharedInstance?.homeTimeLine(success: { (tweets: [Tweet]) in
             self.tweets = tweets
+            self.tableView.reloadData()
             
             for tweet in tweets{
                 print(tweet.text as Any)
@@ -42,7 +48,26 @@ class TweetsViewController: UIViewController //UITableViewDataSource, UITableVie
         
     }
     
-
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tweets != nil{
+            return tweets!.count
+        }else{
+            return 0
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCellTableViewCell
+        
+        //cell.user = self.tweets?[indexPath.row]
+        
+        cell.tweet = self.tweets?[indexPath.row]
+        
+        
+        return cell
+    }
+    
     
     
     /*

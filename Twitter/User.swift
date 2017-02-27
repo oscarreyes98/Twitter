@@ -20,9 +20,9 @@ class User: NSObject {
     init(dictionary: NSDictionary){
         self.dictionary = dictionary
         
-        
-        
         name = dictionary["name"] as? String as NSString?
+        
+
         screenname = dictionary["screen_name"] as? String as NSString?
         let profileUrlString = dictionary["profile_image_url_https"] as? String
         if let profileUrlString = profileUrlString{
