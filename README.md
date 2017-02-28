@@ -41,7 +41,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Wasn't able to complete all the user stories. I tried but I wasn't able to figure out how to completely populate the cell.
+Wasn't able to complete all the user stories. 
 ## License
 
     Copyright [2017] [Oscar Reyes]
