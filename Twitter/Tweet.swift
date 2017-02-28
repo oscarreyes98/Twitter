@@ -17,6 +17,7 @@ class Tweet: NSObject {
     var name: NSString?
     var screenname: NSString?
     var profileUrl: NSURL?
+    var user: User?
     
     
     init(dictionary: NSDictionary){
@@ -33,17 +34,22 @@ class Tweet: NSObject {
         timestamp = formatter.date(from: timestampString) as NSDate?
         }
         
-        name = dictionary["name"] as? String as NSString?
-        screenname = dictionary["screen_name"] as? String as NSString?
-        let profileUrlString = dictionary["profile_image_url"] as? String
-        if let profileUrlString = profileUrlString{
+        
+        name = user?.name as? String as NSString?
+        
+        screenname = user?.screenname as? String as NSString?
+        
+       /* let profileUrlString = user?.profileUrl
+        if let profileUrlString = profileUrlString as? String{
             profileUrl = NSURL(string: profileUrlString)
         }
+        
+        profileUrl = user?.profileUrl as? String as NSString?*/
 
         print("Tweet class hey you got \(name)")
         print("hey this is your favorties \(favoritesCount)")
         print("hey this is your tweet \(text)")
-        print("hey this is your url \(profileUrlString)")
+        //print("hey this is your url \(profileUrlString)")
 
 
     }
