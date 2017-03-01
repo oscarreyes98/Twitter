@@ -27,7 +27,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         TwitterClient.sharedInstance?.fetchRequestToken(withPath: "/oauth/request_token", method: "GET", callbackURL: NSURL(string: "mytwitterdemo://oauth") as URL!, scope: nil, success: { (requestToken: BDBOAuth1Credential?) -> Void in
             
             let url = NSURL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(requestToken!.token!)")
-            UIApplication.shared.openURL((url as? URL)!)
+            UIApplication.shared.open(url as! URL)
             
         }, failure: { (error: Error?) -> Void in
             print("Error: \(error?.localizedDescription)")
@@ -41,6 +41,29 @@ class TwitterClient: BDBOAuth1SessionManager {
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: User.userDidLogoutNotification), object: nil)
     }
+    
+    
+    
+    func retweet(tweet: Tweet, success: @escaping () -> (), failure: @escaping (NSError) -> ()) {
+        post("1.1/statuses/retweet/" + tweet.id_string! + ".json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+            success()
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error as NSError)
+            
+        })
+    }
+    
+    func favorite(tweet: Tweet, success: @escaping () -> (), failure: @escaping (NSError) -> ()) {
+        post("1.1/favorites/create.json", parameters: ["id": tweet.id_string!], progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
+            success()
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error as NSError)
+            
+        })
+    }
+    
+    
+    
     
     
     func handleOpenUrl(url: NSURL){

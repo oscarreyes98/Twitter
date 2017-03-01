@@ -19,11 +19,39 @@ class TweetCellTableViewCell: UITableViewCell {
     @IBOutlet weak var retweetCountLabel: UILabel!
     @IBOutlet weak var loveCountLabel: UILabel!
     
+    
     @IBAction func retweetButton(_ sender: Any) {
+        print("rt button pressed")
         
+    
+        TwitterClient.sharedInstance?.retweet(tweet:(tweet!), success: { () in
+            self.tweet?.retweetCount = (self.tweet?.retweetCount)! + 1
+            if let retweet = self.tweet?.retweetCount{
+                self.retweetCountLabel.text = String(describing: retweet)
+            }
+        }, failure: { (error: NSError) in
+            print("Error: \(error.localizedDescription)")
+            
+        })
+        
+    
     }
     
     @IBAction func loveButton(_ sender: Any) {
+        
+        print("fav button pressed")
+        
+        TwitterClient.sharedInstance?.favorite(tweet:(tweet!), success: { () in
+            self.tweet?.favoritesCount = (self.tweet?.favoritesCount)! + 1
+            if let favorites = self.tweet?.favoritesCount{
+                self.loveCountLabel.text = String(describing: favorites)
+            }
+            
+        }, failure: { (error: NSError) in
+            print("Error: \(error.localizedDescription)")
+        })
+
+
     }
     
     
@@ -44,7 +72,7 @@ class TweetCellTableViewCell: UITableViewCell {
                 self.timestampLabel.text = timeAgoSince((tweet?.timestamp)! as Date)
             }
             
-            if let retweet = self.tweet?.reteweetCount{
+            if let retweet = self.tweet?.retweetCount{
                 self.retweetCountLabel.text = String(describing: retweet)
             }
             if let favorites = self.tweet?.favoritesCount{
