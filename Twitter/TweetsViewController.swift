@@ -68,10 +68,7 @@ class TweetsViewController: UIViewController,UITableViewDataSource,UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCellTableViewCell
         
-        
         cell.tweet = self.tweets?[indexPath.row]
-        
-        
         return cell
     }
     
@@ -83,7 +80,17 @@ class TweetsViewController: UIViewController,UITableViewDataSource,UITableViewDe
             
             let detailViewController = segue.destination as! TweetDetailsViewController
             detailViewController.tweet = tweet
-
+        }
+        
+        else if (segue.identifier == "CellToProfileSegue"){
+            let cellButton = sender as! UIButton
+            let cell = cellButton.superview?.superview as! TweetCellTableViewCell
+            let indexPath = tableView.indexPath(for: cell)
+            let tweet = tweets![(indexPath!.row)]
+            
+            let navController = segue.destination as! UINavigationController
+            let profileViewController = navController.viewControllers[0] as! ProfileViewController
+            profileViewController.tweet = tweet
         }
     }
     

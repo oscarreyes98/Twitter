@@ -62,6 +62,17 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
+    func tweet(status: String, success: @escaping (String) -> (), failure: @escaping (Error) -> ()){
+        let tweetText = status.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        post("1.1/statuses/update.json?status=\(tweetText))", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            
+            success("Done")
+        }) { (task: URLSessionDataTask?, error: Error) in
+            print("error: \(error.localizedDescription)")
+            failure(error)
+        }
+    }
+    
     
     
     

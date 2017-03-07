@@ -22,8 +22,9 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.nameLabel.text = tweet.user?.name as String?
+      
+        self.nameLabel.text = tweet.user?.name! as String?
+    
         self.usernameLabel.text = "@\((tweet.user?.screenname as String?)!)"
         self.tweetCountLabel.text = "\((tweet.user?.numTweets)!)"
         self.followersCountLabel.text = "\((tweet.user?.followers)!)"
@@ -40,6 +41,9 @@ class ProfileViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    @IBAction func onBackButton(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
