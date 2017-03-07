@@ -1,28 +1,28 @@
 //
-//  TweetCellTableViewCell.swift
+//  TweetDetailsViewController.swift
 //  Twitter
 //
-//  Created by Oscar Reyes on 2/26/17.
+//  Created by Oscar Reyes on 2/28/17.
 //  Copyright © 2017 Oscar Reyes. All rights reserved.
 //
 
 import UIKit
 
-class TweetCellTableViewCell: UITableViewCell {
+class TweetDetailsViewController: UIViewController {
     
-    @IBOutlet weak var picImageView: UIImageView!
+    var tweet: Tweet!
+    @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var tweetLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var retweetCountLabel: UILabel!
-    @IBOutlet weak var loveCountLabel: UILabel!
+    @IBOutlet weak var favoriteCountLabel: UILabel!
     
-    
-    @IBAction func retweetButton(_ sender: Any) {
+    @IBAction func onRetweetButton(_ sender: Any) {
         print("rt button pressed")
         
-    
+        
         TwitterClient.sharedInstance?.retweet(tweet:(tweet!), success: { () in
             self.tweet?.retweetCount = (self.tweet?.retweetCount)! + 1
             if let retweet = self.tweet?.retweetCount{
@@ -33,56 +33,48 @@ class TweetCellTableViewCell: UITableViewCell {
             print("Error: \(error.localizedDescription)")
             
         })
-        
-    
     }
-    
-    @IBAction func loveButton(_ sender: Any) {
-        
+    @IBAction func onFavoriteButton(_ sender: Any) {
         print("fav button pressed")
         
         TwitterClient.sharedInstance?.favorite(tweet:(tweet!), success: { () in
             self.tweet?.favoritesCount = (self.tweet?.favoritesCount)! + 1
             if let favorites = self.tweet?.favoritesCount{
-                self.loveCountLabel.text = String(describing: favorites)
+                self.favoriteCountLabel.text = String(describing: favorites)
             }
             
         }, failure: { (error: NSError) in
             print("Already Favorited")
             print("Error: \(error.localizedDescription)")
         })
-
-
     }
     
-    
-    
-    var tweet: Tweet?{
-        didSet{
-           // self.timestampLabel.text = "\(self.tweet?.timestamp)"
-            self.tweetLabel.text = self.tweet?.text as String?
-            //
-            if let profPic = self.tweet?.user?.profileUrl{
-                self.picImageView.setImageWith(profPic as URL)
-            }
-            self.picImageView.layer.cornerRadius = 5
-            self.picImageView.clipsToBounds = true
-            
-            self.nameLabel.text = self.tweet?.user?.name as String?
-            self.usernameLabel.text = "@\((tweet?.user?.screenname as String?)!)"            
-            if (self.tweet?.timestamp) != nil{
-                self.timestampLabel.text = timeAgoSince((tweet?.timestamp)! as Date)
-            }
-            
-            if let retweet = self.tweet?.retweetCount{
-                self.retweetCountLabel.text = String(describing: retweet)
-            }
-            if let favorites = self.tweet?.favoritesCount{
-                self.loveCountLabel.text = String(describing: favorites)
-            }
-            
-            
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.tweetLabel.text = self.tweet?.text as String?
+        //
+        if let profPic = self.tweet?.user?.profileUrl{
+            self.profileImage.setImageWith(profPic as URL)
         }
+        self.profileImage.layer.cornerRadius = 5
+        self.profileImage.clipsToBounds = true
+        
+        self.nameLabel.text = self.tweet?.user?.name as String?
+        self.usernameLabel.text = "@\((tweet.user?.screenname as String?)!)"
+        
+        if (self.tweet?.timestamp) != nil{
+            self.timeLabel.text = timeAgoSince((tweet?.timestamp)! as Date)
+        }
+        
+        if let retweet = self.tweet?.retweetCount{
+            self.retweetCountLabel.text = String(describing: retweet)
+        }
+        if let favorites = self.tweet?.favoritesCount{
+            self.favoriteCountLabel.text = String(describing: favorites)
+        }
+
+        // Do any additional setup after loading the view.
     }
     
     func timeAgoSince(_ date: Date) -> String {
@@ -146,19 +138,22 @@ class TweetCellTableViewCell: UITableViewCell {
         
         return "Just now"
     }
-    
-    
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
-    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
 }
